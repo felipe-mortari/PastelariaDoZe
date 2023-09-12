@@ -7,7 +7,7 @@ app = FastAPI()
 from mod_funcionario import FuncionarioDAO
 from mod_cliente import ClienteDAO
 from mod_produto import ProdutoDAO
-app = FastAPI()
+
 # mapeamento das rotas/endpoints
 app.include_router(FuncionarioDAO.router)
 app.include_router(ClienteDAO.router)
@@ -18,7 +18,7 @@ db.criaTabelas()
 
 if __name__ == "__main__":
     import uvicorn
-uvicorn.run('apiPastelaria:app', host=HOST, port=int(PORT), reload=RELOAD)
+    uvicorn.run('apiPastelaria:app', host=HOST, port=int(PORT), reload=RELOAD)
 
 # rota padrão
 @app.get("/")

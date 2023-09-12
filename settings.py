@@ -19,7 +19,5 @@ DB_PASS = quote(os.getenv("DB_PASS"))
 # Ajusta STR_DATABASE conforme gerenciador escolhido
 if DB_SGDB == 'sqlite': # SQLite
     STR_DATABASE = f"sqlite:///{DB_NAME}.db" 
-    
-    STR_DATABASE = f"mssql+pymssql://{DB_USER}:{DB_PASS}@{DB_HOST}/{DB_NAME}?charset=utf8"
 else: # SQLite
     STR_DATABASE = f"sqlite:///apiDatabase.db"
