@@ -1,0 +1,1 @@
+from mod_funcionario.Funcionario import Funcionario
