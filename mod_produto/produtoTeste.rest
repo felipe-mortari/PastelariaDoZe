@@ -1,30 +1,32 @@
-### Verbo GET – listar todos
+### Verbo GET - Listar Todos
 GET http://localhost:8000/produto/ HTTP/1.1
-### Verbo GET – listar um
+
+### Verbo GET - Listar Um
 GET http://localhost:8000/produto/10 HTTP/1.1
 
-### Verbo POST – adicionar
+### Verbo POST - Adicionar
 POST http://localhost:8000/produto/ HTTP/1.1
 Content-Type: application/json
 
 {
-  "nome": "Produto A",
+  "nome": "Produto do FELIPE MORTARI",
   "descricao": "Descrição do Produto A",
-  "preco": 19.99,
-  "estoque": 100
+  "foto": "link_da_foto.jpg",
+  "valor_unitario": 19
 }
 
-### Verbo PUT – atualiza
+### Verbo PUT - Atualizar
 PUT http://localhost:8000/produto/2 HTTP/1.1
 Content-Type: application/json
 
 {
-  "nome": "Produto B",
+  "nome": "Produto NOVO DO FELIPE",
   "descricao": "Descrição atualizada do Produto B",
-  "preco": 29.99,
-  "estoque": 200
+  "foto": "link_da_foto_atualizada.jpg",
+  "valor_unitario": 29
 }
 
-### Verbo DELETE - excluir
+### Verbo DELETE - Excluir
 DELETE http://localhost:8000/produto/3 HTTP/1.1
+
 

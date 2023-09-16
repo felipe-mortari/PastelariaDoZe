@@ -4,5 +4,5 @@ class Produto(BaseModel):
     id: int
     nome: str
     descricao: str
-    preco: float
-    estoque: int
+    foto: str
+    valor_unitario: int

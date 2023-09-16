@@ -1,26 +1,88 @@
 
 from fastapi import APIRouter
-from mod_produto.Produto import Produto
+from mod_produto.Produto import Produto  # Importe a classe de modelo correta aqui
+from mod_produto.ProdutoModel import ProdutoDB  # Importe a classe de modelo do banco de dados correta aqui
+import db
 
 router = APIRouter()
 
-# Criar os endpoints de Cliente: GET, POST, PUT, DELETE
 @router.get("/produto/", tags=["Produto"])
-def get_produto():
-    return {"msg": "get todos executado"}, 200
+def get_produtos():
+    try:
+        session = db.Session()
+        produtos = session.query(ProdutoDB).all()
+        return produtos, 200
+    except Exception as e:
+        return {"erro": str(e)}, 400
+    finally:
+        session.close()
 
 @router.get("/produto/{id}", tags=["Produto"])
 def get_produto(id: int):
-    return {"msg": "get um executado"}, 200
+    try:
+        session = db.Session()
+        produto = session.query(ProdutoDB).filter(ProdutoDB.id == id).first()
+        if produto:
+            return produto, 200
+        else:
+            return {"mensagem": "Produto não encontrado"}, 404
+    except Exception as e:
+        return {"erro": str(e)}, 400
+    finally:
+        session.close()
 
 @router.post("/produto/", tags=["Produto"])
-def post_produto(f: Produto):
-    return {"msg": "post executado", "nome": f.nome, "descrição": f.descricao, "valor": f.valor_unitario}, 200
+def post_produto(corpo: Produto):
+    try:
+        session = db.Session()
+        produto_db = ProdutoDB(
+            nome=corpo.nome,
+            descricao=corpo.descricao,
+            foto=corpo.foto,
+            valor_unitario=corpo.valor_unitario
+        )
+        session.add(produto_db)
+        session.commit()
+        return {"id": produto_db.id}, 200
+    except Exception as e:
+        session.rollback()
+        return {"erro": str(e)}, 400
+    finally:
+        session.close()
 
 @router.put("/produto/{id}", tags=["Produto"])
-def put_produto(id: int, f: Produto):
-    return {"msg": "put executado", "id": id, "nome": f.nome, "descrição": f.descricao, "valor": f.valor_unitario}, 201
+def put_produto(id: int, corpo: Produto):
+    try:
+        session = db.Session()
+        produto_db = session.query(ProdutoDB).filter(ProdutoDB.id == id).first()
+        if produto_db:
+            produto_db.nome = corpo.nome
+            produto_db.descricao = corpo.descricao
+            produto_db.foto = corpo.foto
+            produto_db.valor_unitario = corpo.valor_unitario
+            session.commit()
+            return {"id": produto_db.id}, 200
+        else:
+            return {"mensagem": "Produto não encontrado"}, 404
+    except Exception as e:
+        session.rollback()
+        return {"erro": str(e)}, 400
+    finally:
+        session.close()
 
 @router.delete("/produto/{id}", tags=["Produto"])
 def delete_produto(id: int):
-    return {"msg": "delete executado"}, 201 
+    try:
+        session = db.Session()
+        produto_db = session.query(ProdutoDB).filter(ProdutoDB.id == id).first()
+        if produto_db:
+            session.delete(produto_db)
+            session.commit()
+            return {"mensagem": "Produto excluído com sucesso"}, 200
+        else:
+            return {"mensagem": "Produto não encontrado"}, 404
+    except Exception as e:
+        session.rollback()
+        return {"erro": str(e)}, 400
+    finally:
+        session.close()
