@@ -4,9 +4,15 @@ from mod_produto.Produto import Produto  # Importe a classe de modelo correta aq
 from mod_produto.ProdutoModel import ProdutoDB  # Importe a classe de modelo do banco de dados correta aqui
 import db
 
-router = APIRouter()
+# import da segurança
+from fastapi import Depends
+import security
 
-@router.get("/produto/", tags=["Produto"])
+# dependências de forma global
+router = APIRouter( dependencies=[Depends(security.verify_token), Depends(security.verify_key)] ) 
+
+@router.get("/produto/", tags=["Produto"],
+dependencies=[Depends(security.verify_token), Depends(security.verify_key)])
 def get_produtos():
     try:
         session = db.Session()

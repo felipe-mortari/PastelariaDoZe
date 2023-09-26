@@ -1,6 +1,7 @@
-### Verbo GET - Listar Todos
+### Verbo GET – listar todos
 GET http://localhost:8000/produto/ HTTP/1.1
-
+x-token: abcBolinhasToken
+x-key: abcBolinhasKey
 ### Verbo GET - Listar Um
 GET http://localhost:8000/produto/10 HTTP/1.1
 

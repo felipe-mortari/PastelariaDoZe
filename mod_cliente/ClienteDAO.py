@@ -3,9 +3,15 @@ from mod_cliente.Cliente import Cliente  # Importe a classe de modelo correta aq
 from mod_cliente.ClienteModel import ClienteDB  # Importe a classe de modelo do banco de dados correta aqui
 import db
 
-router = APIRouter()
+# import da segurança
+from fastapi import Depends
+import security
 
-@router.get("/cliente/", tags=["Cliente"])
+# dependências de forma global
+router = APIRouter( dependencies=[Depends(security.verify_token), Depends(security.verify_key)] ) 
+
+@router.get("/cliente/", tags=["Cliente"], 
+dependencies=[Depends(security.verify_token), Depends(security.verify_key)])
 def get_clientes():
     try:
         session = db.Session()
